@@ -7,6 +7,8 @@ client_id = 'OG1ybGctcElmREk1ZE5EWVpLY29LQTpmOWJlMWE4YTViZDQ3YTIz'
 
 
 def search(bounding_box):
+    """Gets images from the bounding box
+    WARNING: images can be outside of the shape!"""
     msg = """https://a.mapillary.com/v3/images?client_id=%s&bbox=%s""" % (client_id, bounding_box)
     response = requests.get(msg)
     return response.json()
@@ -24,6 +26,10 @@ for record in shapeRecs:
     fname = '_'.join(bbox).replace('.', ',') + '.json'
     print(fname)
     bbox = ','.join(bbox)
-    res = search(bbox)
-    with open(join(out_path, fname), 'w') as f:
-        json.dump(res, f)
+    try:
+        res = search(bbox)
+        with open(join(out_path, fname), 'w') as f:
+            json.dump(res, f)
+    except Exception as e:
+        print(fname, e)
+        continue

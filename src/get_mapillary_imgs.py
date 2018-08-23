@@ -8,6 +8,7 @@ in_path = 'data/jsons'
 out_path = 'data/imgs'
 
 fs = [f for f in listdir(in_path) if isfile(join(in_path, f))]
+imgs = [f for f in listdir(out_path) if isfile(join(out_path, f))]
 for f in fs:
     with open(join(in_path, f), 'r') as inputfile:
         d = json.load(inputfile)
@@ -25,7 +26,8 @@ for f in fs:
                 links = set([l for l in links if l.endswith('jpg')])
                 for link in links:
                     filename = f.split('.')[0] + '|' + str(i) + '.jpg'
-                    response = urlopen(link).read()
-                    with open(join(out_path, filename), 'wb') as outfile:
-                        outfile.write(response)
-                        i += 1
+                    if filename not in imgs:
+                        response = urlopen(link).read()
+                        with open(join(out_path, filename), 'wb') as outfile:
+                            outfile.write(response)
+                            i += 1
