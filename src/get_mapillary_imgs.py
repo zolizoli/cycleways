@@ -10,9 +10,11 @@ out_path = 'data/imgs'
 fs = [f for f in listdir(in_path) if isfile(join(in_path, f))]
 imgs = [f for f in listdir(out_path) if isfile(join(out_path, f))]
 imgs = set([f.split('|')[0] for f in imgs])
+n = len(fs) -len(imgs)
 for f in fs:
     if f.split('.')[0] not in imgs:
-        print(f)
+        n -= 1
+        print(n)
         with open(join(in_path, f), 'r') as inputfile:
             d = json.load(inputfile)
             features = d['features']
